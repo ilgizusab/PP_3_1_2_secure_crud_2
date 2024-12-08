@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -27,10 +26,17 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public void saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Set<Role> roles = new HashSet<>();
-        roles.add(roleRepository.findByName("ROLE_USER"));
-        user.setRoles(roles);
+        User existingUser = userRepository.findById(user.getId()).orElse(null);
+        if (existingUser != null) {
+            String newPassword = passwordEncoder.encode(user.getPassword());
+            if (!user.getPassword().equals(newPassword)) {
+                user.setPassword(newPassword);
+            }
+            if (user.getPassword().isEmpty()) {
+                user.setPassword(existingUser.getPassword());
+            }
+            user.setRoles(existingUser.getRoles());
+        }
         userRepository.save(user);
     }
 

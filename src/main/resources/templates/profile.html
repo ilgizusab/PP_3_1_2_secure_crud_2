@@ -3,23 +3,81 @@
 <head>
   <title>Профиль</title>
   <meta charset="UTF-8"/>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      color: #555;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      background: #336699;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #285580;
+    }
+    .success {
+      color: green;
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-<h1>Профиль</h1>
-<form th:action="@{/profile}" th:object="${user}" method="post">
-  <input type="hidden" th:field="*{id}"/>
+<div class="container">
+  <h2>Профиль</h2>
   <div>
-    <label for="name">Имя:</label>
-    <input type="text" th:field="*{name}" id="name"/>
+    <a th:href="@{/}">
+      <button>На главную</button>
+    </a>
   </div>
-  <div>
-    <label for="password">Пароль:</label>
-    <input type="password" th:field="*{password}" id="password"/>
+  <form th:action="@{/profile}" th:object="${user}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <div>
+      <label for="name">Имя:</label>
+      <input type="text" th:field="*{name}" id="name"/>
+    </div>
+    <div>
+      <label for="password">Пароль:</label>
+      <input type="password" th:field="*{password}" id="password"/>
+    </div>
+    <button type="submit">Обновить профиль</button>
+  </form>
+
+  <div th:if="${param.success}" class="success">
+    Успешное обновление профиля!
   </div>
-  <button type="submit">Обновить профиль</button>
-</form>
-<div th:if="${param.success}" class="success">
-  Успешное обновление профиля!
 </div>
 </body>
 </html>

@@ -41,7 +41,7 @@ public class AdminController {
         return "editUser";
     }
 
-    @PostMapping("/edit")
+    @PostMapping("admin/edit/{id}")
     public String updateUser(@ModelAttribute("user") User user, @RequestParam("roleId") Integer roleId, @RequestParam(value = "password", required = false) String password) {
         userService.updateUser(user, roleId, password);
         return "redirect:/admin?success";

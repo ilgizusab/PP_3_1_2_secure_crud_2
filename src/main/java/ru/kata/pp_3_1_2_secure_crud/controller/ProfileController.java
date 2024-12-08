@@ -28,6 +28,6 @@ public class ProfileController {
     @PostMapping("/profile")
     public String updateProfile(@ModelAttribute("user") User user) {
         userService.saveUser(user);
-        return "redirect:/profile?success";
+        return "redirect:/";
     }
 }

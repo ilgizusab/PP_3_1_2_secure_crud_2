@@ -1,35 +1,82 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>New User</title>
     <meta charset="UTF-8"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #555;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background: #336699;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #285580;
+        }
+    </style>
 </head>
 <body>
-<h1>New User</h1>
-<form th:action="@{/admin/edit}" th:object="${user}" method="post">
-    <input type="hidden" th:field="*{id}"/>
-    <div>
-        <label for="name">Name:</label>
-        <input type="text" th:field="*{name}" id="name"/>
-    </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" th:field="*{password}" id="password"/>
-    </div>
-    <div>
-        <label>Roles:</label>
-        <div th:each="role : ${allRoles}">
-            <input type="checkbox" name="roleIds" th:value="${role.id}" th:checked="${user.roles.contains(role)}"/>
-            <label th:for="${role.id}" th:text="${role.name}"></label>
+<div class="container">
+    <h1>New User</h1>
+    <form th:action="@{/admin/edit}" th:object="${user}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" th:field="*{name}" id="name"/>
         </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" th:field="*{password}" id="password"/>
+        </div>
+        <div>
+            <label for="role">Роль:</label>
+            <select id="role" name="roleId">
+                <option th:each="role : ${allRoles}" th:value="${role.id}"
+                        th:selected="${user.roles.contains(role)}" th:text="${role.name}"></option>
+            </select>
+        </div>
+        <button type="submit">Save User</button>
+    </form>
+    <div>
+        <a th:href="@{/admin}">
+            <button>Админ-панель</button>
+        </a>
     </div>
-    <button type="submit">Save User</button>
-</form>
-<div>
-    <a th:href="@{/admin}">
-        <button>Админ-панель</button>
-    </a>
+    <a href="/">Go to Home Page</a>
 </div>
-<a href="/">Go to Home Page</a>
 </body>
 </html>

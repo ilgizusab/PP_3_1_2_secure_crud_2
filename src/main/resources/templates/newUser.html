@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>New User</title>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<h1>New User</h1>
+<form th:action="@{/admin/edit}" th:object="${user}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <div>
+        <label for="name">Name:</label>
+        <input type="text" th:field="*{name}" id="name"/>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" th:field="*{password}" id="password"/>
+    </div>
+    <div>
+        <label>Roles:</label>
+        <div th:each="role : ${allRoles}">
+            <input type="checkbox" name="roleIds" th:value="${role.id}" th:checked="${user.roles.contains(role)}"/>
+            <label th:for="${role.id}" th:text="${role.name}"></label>
+        </div>
+    </div>
+    <button type="submit">Save User</button>
+</form>
+<div>
+    <a th:href="@{/admin}">
+        <button>Админ-панель</button>
+    </a>
+</div>
+<a href="/">Go to Home Page</a>
+</body>
+</html>

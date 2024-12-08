@@ -38,15 +38,32 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         if (userRepository.findByName("admin") == null) {
+
+            //добавление админа в БД
             User admin = new User();
             admin.setName("admin");
             admin.setPassword(passwordEncoder.encode("admin"));
 
-            Set<Role> roles = new HashSet<>();
-            roles.add(roleRepository.findByName("ROLE_ADMIN"));
-            admin.setRoles(roles);
+            Set<Role> adminRoles = new HashSet<>();
+            adminRoles.add(roleRepository.findByName("ROLE_ADMIN"));
+            admin.setRoles(adminRoles);
 
             userRepository.save(admin);
+
+
+        }
+
+        if (userRepository.findByName("user") == null) {
+            //добавление юзера в БД
+            User user = new User();
+            user.setName("user");
+            user.setPassword(passwordEncoder.encode("user"));
+
+            Set<Role> userRoles = new HashSet<>();
+            userRoles.add(roleRepository.findByName("ROLE_USER"));
+            user.setRoles(userRoles);
+
+            userRepository.save(user);
         }
     }
 }

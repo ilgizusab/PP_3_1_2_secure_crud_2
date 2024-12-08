@@ -2,22 +2,30 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
     <title>Главная страница</title>
 </head>
 <body>
-<h1>Добро пожаловать на главную страницу!</h1>
-<p th:if="${username != null}">Привет, <span th:text="${username}"></span>!</p>
-<p th:if="${username != null}">права - <span th:text="${role}"></span>!</p>
-<a th:href="@{/login}">
-    <button>Войти</button>
-</a>
-<div th:if="${role=='ROLE_ADMIN'}">
-    <a th:href="@{/admin}">
-        <button>Админ-панель</button>
+<div class="container">
+    <h1>Добро пожаловать на главную страницу!</h1>
+    <p th:if="${username != null}">Привет, <span th:text="${username}"></span>!</p>
+    <p th:if="${username != null}">Права - <span th:text="${role}"></span>!</p>
+    <a th:href="@{/login}">
+        <button>Войти</button>
     </a>
+    <div th:if="${role=='ROLE_ADMIN'}">
+        <a th:href="@{/admin}">
+            <button>Админ-панель</button>
+        </a>
+    </div>
+    <div th:if="${role=='ROLE_USER'}">
+        <a th:href="@{/profile}">
+            <button>Профиль пользователя</button>
+        </a>
+    </div>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Выйти</button>
+    </form>
 </div>
-<form th:action="@{/logout}" method="post">
-    <button type="submit">Выйти</button>
-</form>
 </body>
 </html>

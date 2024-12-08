@@ -8,8 +8,11 @@ import ru.kata.pp_3_1_2_secure_crud.model.User;
 import ru.kata.pp_3_1_2_secure_crud.repository.RoleRepository;
 import ru.kata.pp_3_1_2_secure_crud.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -31,7 +34,56 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User findByName(String name) {
-        return userRepository.findByName(name);
+    public User findByUsername(String username) {
+        return userRepository.findByName(username);
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id.intValue());
+    }
+
+    public User findById(Long id) {
+        return userRepository.findById(id.intValue()).orElse(null);
+    }
+
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        for (User user:userRepository.findAll()){
+            users.add(user);
+        }
+        return users;
+    }
+
+    public List<Role> getAllRoles() {
+        List<Role> roles = new ArrayList<>();
+        for (Role role:roleRepository.findAll()){
+            roles.add(role);
+        }
+        return roles;
+    }
+
+    public void updateUser(User user, Integer roleId, String password) {
+        User existingUser = userRepository.findById(user.getId()).orElse(null);
+        if (existingUser != null) {
+            existingUser.setName(user.getName());
+            if (password != null && !password.isEmpty()) {
+                existingUser.setPassword(passwordEncoder.encode(password));
+            }
+            Role role = roleRepository.findById(roleId).orElse(null);
+            if (role != null) {
+                existingUser.getRoles().clear();
+                existingUser.getRoles().add(role);
+            }
+            userRepository.save(existingUser);
+        }
+    }
+
+    public User newUser() {
+        User user;
+        user = new User();
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleRepository.findByName("ROLE_USER"));
+        user.setRoles(roles);
+        return user;
     }
 }

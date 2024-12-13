@@ -1,4 +1,5 @@
 package ru.kata.pp_3_1_2_secure_crud;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;

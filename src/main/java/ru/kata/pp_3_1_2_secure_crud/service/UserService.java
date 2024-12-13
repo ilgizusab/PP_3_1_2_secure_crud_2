@@ -1,6 +1,8 @@
 package ru.kata.pp_3_1_2_secure_crud.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kata.pp_3_1_2_secure_crud.model.Role;
@@ -26,7 +28,7 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public void saveUser(User user) {
-        User existingUser = userRepository.findById(user.getId()).orElse(null);
+        User existingUser = userRepository.findByName(user.getName());
         if (existingUser != null) {
             String newPassword = passwordEncoder.encode(user.getPassword());
             if (!user.getPassword().equals(newPassword)) {
@@ -91,5 +93,12 @@ public class UserService {
         roles.add(roleRepository.findByName("ROLE_USER"));
         user.setRoles(roles);
         return user;
+    }
+
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authentication.getName();
+        userRepository.findByName(currentUserName);
+        return userRepository.findByName(currentUserName);
     }
 }

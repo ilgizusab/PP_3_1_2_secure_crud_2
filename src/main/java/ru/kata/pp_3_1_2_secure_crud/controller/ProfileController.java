@@ -18,9 +18,7 @@ public class ProfileController {
 
     @GetMapping("/profile")
     public String showProfileForm(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserName = authentication.getName();
-        User user = userService.findByUsername(currentUserName);
+        User user = userService.getCurrentUser();
         model.addAttribute("user", user);
         return "profile";
     }
